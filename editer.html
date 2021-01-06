@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="bookdata.js"></script>
+    <link rel="stylesheet" href="styleSet.css">
+</head>
+
+<body class="basic_back">
+
+    <div id="app">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="作家一覽" name="first">
+                <el-col v-for="(o, index) in  editerList" :key='index' style="width:auto">
+                    <el-card :body-style="{ padding: '0px' }" style="height: 463px;" class='card_set'>
+                        <img src="https://p2.bahamut.com.tw/HOME/creationCover/17/0004984617.JPG?w=180"
+                            style="width:245px" class="image">
+                        <div style="padding: 14px; color:wheat">
+                            <span>{{o.pen_name}}</span>
+                            <div class="bottom clearfix">
+                                <pre style="font-size: 15px;">{{ o.command }}</pre>
+                                <el-button type="text" class="button" @click="targetEdit = o; visible = true">更多資訊
+                                </el-button>
+                            </div>
+                        </div>
+                    </el-card>
+                </el-col>
+
+
+            </el-tab-pane>
+        </el-tabs>
+        <el-dialog :visible.sync="visible" :title="targetEdit.pen_name">
+            <pre>{{targetEdit.chat}}</pre>
+            <span v-for="(tab,index) in targetEdit.tab" :key='index'>
+                <a v-if="checkLink(tab.link)>0" :href="tab.link">
+                    <el-button> {{tab.name}}</el-button>
+                </a>
+                <el-button v-else> {{tab.name}}:{{tab.link}}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeName: 'first',
+                editerList: editer_list,
+                visible: false,
+                targetEdit: {}
+            }
+        },
+        methods: {
+            checkLink: function (link) {
+                return link.includes('https')
+            },
+            handleClick(tab, event) {
+                console.log(tab, event);
+            }
+        }
+    })
+</script>
+
+</html>
